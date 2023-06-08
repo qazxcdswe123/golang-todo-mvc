@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Todo Page</title>
+  </head>
+  <body onload="checkAuth()">
+    <h2>Create Todo</h2>
+    <form id="createTodoForm">
+      <label for="task">Task:</label><br />
+      <input type="text" id="task" name="task" /><br />
+      <input type="submit" value="Submit" />
+    </form>
+    <h2>Todo Search</h2>
+    <form id="searchForm">
+      <label for="search">Search:</label><br />
+      <input type="text" id="search" name="search" /><br />
+      <input type="submit" value="Search" />
+    </form>
+    <hr />
+
+    <h2>Your Todos</h2>
+    <div id="todos"></div>
+
+    <script>
+      let token = localStorage.getItem("token"); // replace this with actual token
+
+      // Check Authorization
+      async function checkAuth() {
+        const response = await fetch(`http://localhost:3000/todo/list`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+        console.log(data);
+        if (response.status !== 200) {
+          console.error("Error: ", data.error);
+          location.href = "/login.html";
+        }
+      }
+
+      // Create a todo
+      document.getElementById("createTodoForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const task = document.getElementById("task").value;
+
+        const response = await fetch("http://localhost:3000/todo/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ task }),
+        });
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          console.error("Error: ", data.error);
+        } else {
+          console.log("Todo Created: ", data);
+          loadTodos(); // Refresh the todo list
+        }
+      });
+
+      // Get all todos
+      async function loadTodos() {
+        const response = await fetch(`http://localhost:3000/todo/list`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status !== 200) {
+          console.error("Error: ", data.error);
+        } else {
+          let todosDiv = document.getElementById("todos");
+          todosDiv.innerHTML = ""; // Clear current todos
+          data.todos.forEach((todo) => {
+            let todoElement = document.createElement("div");
+            todoElement.innerHTML = `ID: ${todo.id}, Task: ${todo.task}, Completed: ${todo.completed}`;
+
+            // Complete checkbox
+            let completeCheckbox = document.createElement("input");
+            completeCheckbox.type = "checkbox";
+            completeCheckbox.checked = todo.completed;
+            completeCheckbox.addEventListener("change", () => toggleComplete(todo.id));
+            todoElement.appendChild(completeCheckbox);
+
+            // Delete button
+            let deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.addEventListener("click", () => deleteTodo(todo.id));
+            todoElement.appendChild(deleteButton);
+
+            // Change task button and input field
+            let changeTaskInput = document.createElement("input");
+            changeTaskInput.type = "text";
+            changeTaskInput.value = todo.task;
+            let changeTaskButton = document.createElement("button");
+            changeTaskButton.innerText = "Change Task";
+            changeTaskButton.addEventListener("click", () =>
+              changeTodo(todo.id, changeTaskInput.value)
+            );
+            todoElement.appendChild(changeTaskInput);
+            todoElement.appendChild(changeTaskButton);
+
+            todosDiv.appendChild(todoElement);
+          });
+        }
+      }
+
+      async function toggleComplete(todoID) {
+        const response = await fetch(`http://localhost:3000/todo/${todoID}/check`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ completed: true }),
+        });
+        if (response.status !== 200) {
+          console.error("Error: ", (await response.json()).error);
+        } else {
+          loadTodos();
+        }
+      }
+
+      async function deleteTodo(todoID) {
+        const response = await fetch(`http://localhost:3000/todo/${todoID}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status !== 200) {
+          console.error("Error: ", (await response.json()).error);
+        } else {
+          loadTodos();
+        }
+      }
+
+      async function changeTodo(todoID, newTask) {
+        const response = await fetch(`http://localhost:3000/todo/${todoID}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ task: newTask }),
+        });
+        if (response.status !== 200) {
+          console.error("Error: ", (await response.json()).error);
+        } else {
+          loadTodos();
+        }
+      }
+
+      // Search todos
+      document.getElementById("searchForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const search = document.getElementById("search").value;
+
+        const response = await fetch("http://localhost:3000/todo/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ query: search }),
+        });
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          console.error("Error: ", data.error);
+        } else {
+          let todosDiv = document.getElementById("todos");
+          todosDiv.innerHTML = ""; // Clear current todos
+          data.todos.forEach((todo) => {
+            let todoElement = document.createElement("div");
+            todoElement.innerHTML = `ID: ${todo.id}, Task: ${todo.task}, Completed: ${todo.completed}`;
+
+            // Complete checkbox
+            let completeCheckbox = document.createElement("input");
+            completeCheckbox.type = "checkbox";
+            completeCheckbox.checked = todo.completed;
+            completeCheckbox.addEventListener("change", () => toggleComplete(todo.id));
+            todoElement.appendChild(completeCheckbox);
+
+            // Delete button
+            let deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.addEventListener("click", () => deleteTodo(todo.id));
+            todoElement.appendChild(deleteButton);
+
+            // Change task button and input field
+            let changeTaskInput = document.createElement("input");
+            changeTaskInput.type = "text";
+            changeTaskInput.value = todo.task;
+            let changeTaskButton = document.createElement("button");
+            changeTaskButton.innerText = "Change Task";
+            changeTaskButton.addEventListener("click", () =>
+              changeTodo(todo.id, changeTaskInput.value)
+            );
+            todoElement.appendChild(changeTaskInput);
+            todoElement.appendChild(changeTaskButton);
+
+            todosDiv.appendChild(todoElement);
+          });
+        }
+      });
+
+      loadTodos(); // Load todos on page load
+    </script>
+  </body>
+</html>

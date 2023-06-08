@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registration Page</title>
+  </head>
+  <body>
+    <h2>Register</h2>
+    <form id="registerForm">
+      <label for="name">Name:</label><br />
+      <input type="text" id="name" name="name" /><br />
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="email" /><br />
+      <label for="password">Password:</label><br />
+      <input type="password" id="password" name="password" /><br />
+      <input type="submit" value="Submit" />
+
+      <button id="loginBtn" style="margin-top: 10px">Login Page</button>
+    </form>
+    <p id="message"></p>
+
+    <script>
+      document.getElementById("registerForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const response = await fetch("http://localhost:3000/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          document.getElementById("message").innerText = data.error;
+        } else {
+          location.href = "/todo.html";
+        }
+        localStorage.setItem("token", data.auth.token);
+      });
+
+      document.getElementById("loginBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        location.href = "/login.html"; // replace with your registration page URL
+      });
+    </script>
+  </body>
+</html>
