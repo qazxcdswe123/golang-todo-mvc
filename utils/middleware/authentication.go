@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"numtostr/gotodo/utils/jwt"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils/jwt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"

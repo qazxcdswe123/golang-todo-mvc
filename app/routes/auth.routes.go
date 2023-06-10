@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"numtostr/gotodo/app/services"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/services"
 
 	"github.com/gofiber/fiber/v2"
 )

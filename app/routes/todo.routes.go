@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"numtostr/gotodo/app/services"
-	"numtostr/gotodo/utils/middleware"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/services"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )

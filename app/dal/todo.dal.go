@@ -1,7 +1,7 @@
 package dal
 
 import (
-	"numtostr/gotodo/config/database"
+	"github.com/qazxcdswe123/golang-todo-mvc/config/database"
 
 	"gorm.io/gorm"
 )

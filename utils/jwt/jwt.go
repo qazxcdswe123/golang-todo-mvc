@@ -3,7 +3,7 @@ package jwt
 import (
 	"errors"
 	"fmt"
-	"numtostr/gotodo/config"
+	"github.com/qazxcdswe123/golang-todo-mvc/config"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"

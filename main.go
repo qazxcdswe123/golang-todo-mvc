@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"numtostr/gotodo/app/dal"
-	"numtostr/gotodo/app/routes"
-	"numtostr/gotodo/config"
-	"numtostr/gotodo/config/database"
-	"numtostr/gotodo/utils"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/dal"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/routes"
+	"github.com/qazxcdswe123/golang-todo-mvc/config"
+	"github.com/qazxcdswe123/golang-todo-mvc/config/database"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"

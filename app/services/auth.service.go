@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
-	"numtostr/gotodo/app/dal"
-	"numtostr/gotodo/app/types"
-	"numtostr/gotodo/utils"
-	"numtostr/gotodo/utils/jwt"
-	"numtostr/gotodo/utils/password"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/dal"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/types"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils/jwt"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils/password"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"

@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"numtostr/gotodo/config"
+	"github.com/qazxcdswe123/golang-todo-mvc/config"
 	"time"
 
 	"gorm.io/driver/sqlite"

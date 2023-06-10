@@ -2,9 +2,9 @@ package services
 
 import (
 	"errors"
-	"numtostr/gotodo/app/dal"
-	"numtostr/gotodo/app/types"
-	"numtostr/gotodo/utils"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/dal"
+	"github.com/qazxcdswe123/golang-todo-mvc/app/types"
+	"github.com/qazxcdswe123/golang-todo-mvc/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"

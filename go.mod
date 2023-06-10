@@ -1,4 +1,4 @@
-module numtostr/gotodo
+module github.com/qazxcdswe123/golang-todo-mvc
 
 go 1.18
 
